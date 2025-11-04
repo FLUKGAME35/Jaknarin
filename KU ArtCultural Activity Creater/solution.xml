@@ -1,0 +1,30 @@
+<ImportExportXml version="9.2.25102.151" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.25102.151" OrganizationSchemaType="Core" CRMServerServiceabilityVersion="9.2.25102.00151">
+  <SolutionManifest>
+    <UniqueName>ExportComponentsd070d5b1659b4535b4231cc69418d425</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="ExportComponentsd070d5b1659b4535b4231cc69418d425" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>Cra9080</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="CDS Default Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>cr82a</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>52709</CustomizationOptionValuePrefix>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="cr82a_activities_table" behavior="0" />
+      <RootComponent type="1" schemaName="cr82a_location_table" behavior="0" />
+      <RootComponent type="1" schemaName="cr82a_registeractivity_table" behavior="0" />
+      <RootComponent type="1" schemaName="cr82a_user_table" behavior="0" />
+      <RootComponent type="300" schemaName="cr82a_kuartculturalactivitycreater_98f1e" behavior="0" />
+    </RootComponents>
+    <MissingDependencies />
+  </SolutionManifest>
+</ImportExportXml>

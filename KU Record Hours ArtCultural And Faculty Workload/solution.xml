@@ -1,0 +1,29 @@
+<ImportExportXml version="9.2.25102.151" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.25102.151" OrganizationSchemaType="Core" CRMServerServiceabilityVersion="9.2.25102.00151">
+  <SolutionManifest>
+    <UniqueName>ExportComponents41b76b51089042bf8b86b24f4f23816f</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="ExportComponents41b76b51089042bf8b86b24f4f23816f" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>Cra9080</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="CDS Default Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>cr82a</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>52709</CustomizationOptionValuePrefix>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="1" schemaName="cr82a_activities_table" behavior="0" />
+      <RootComponent type="1" schemaName="cr82a_registeractivity_table" behavior="0" />
+      <RootComponent type="1" schemaName="cr82a_user_table" behavior="0" />
+      <RootComponent type="300" schemaName="cr82a_kurecordhoursartculturalandfacultyworkload_dc7c2" behavior="0" />
+    </RootComponents>
+    <MissingDependencies />
+  </SolutionManifest>
+</ImportExportXml>

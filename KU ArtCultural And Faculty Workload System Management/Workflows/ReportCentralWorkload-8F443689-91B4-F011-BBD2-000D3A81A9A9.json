@@ -1,0 +1,318 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cr82a_sharedcommondataserviceforapps_0ac2b"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_excelonlinebusiness": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cr82a_sharedexcelonlinebusiness_49165"
+        },
+        "api": {
+          "name": "shared_excelonlinebusiness"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cr82a_sharedonedriveforbusiness_2edc2"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "bc03de96-7c14-4aa9-90ff-f161dd49f719"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Filter",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "number": {
+                  "title": "Filter2",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                }
+              },
+              "required": [
+                "text",
+                "number"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_a_Power_App_or_flow": {
+          "runAfter": {
+            "Create_share_link": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "88296c78-9ba8-4150-a7de-1c0579b38974"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "fileoutput": "@outputs('Create_share_link')?['body/WebUrl']"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fileoutput": {
+                  "title": "Fileoutput",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "List_rows": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "1701082c-d0a2-4a0b-a96c-5dc7e4759e85"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cr82a_activities_tables",
+              "$filter": "cr82a_newcolumn eq '0030'"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('List_rows')?['body/value']",
+          "actions": {
+            "Compose": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "e8941b4d-3d2e-4e1a-8f11-0719220a0a04"
+              },
+              "type": "Compose",
+              "inputs": "@items('Apply_to_each')?['cr82a_newcolumn']"
+            }
+          },
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b4a50298-08d6-4099-a717-96052cb853fb"
+          },
+          "type": "Foreach"
+        },
+        "Apply_to_each_2": {
+          "foreach": "@outputs('List_rows')?['body/value']",
+          "actions": {
+            "Select": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "a7732293-5749-48a5-acc1-b7d5f6a40cbd"
+              },
+              "type": "Select",
+              "inputs": {
+                "from": "@outputs('List_rows')?['body/value']",
+                "select": {
+                  "คณะ": "@items('Apply_to_each_2')?['cr82a_activity_name']"
+                }
+              }
+            },
+            "Apply_to_each_3": {
+              "foreach": "@body('Select')",
+              "actions": {
+                "Add_a_row_into_a_table": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "d705c48c-022e-4354-936a-751f181915fb",
+                    "tableId": "Table1"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_excelonlinebusiness",
+                      "operationId": "AddRowV2",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_excelonlinebusiness"
+                    },
+                    "parameters": {
+                      "source": "me",
+                      "drive": "b!rpJ5zNi_0UCnNOtxP3lik0AZRJ7KQp5EhGrBdxMHRJXuGSvUzlD_Q7Zxc1k5C6Hy",
+                      "file": "@outputs('Create_file')?['body/Path']",
+                      "table": "Table1",
+                      "item": "คณะ"
+                    },
+                    "authentication": "@parameters('$authentication')"
+                  }
+                }
+              },
+              "runAfter": {
+                "Select": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "09b04328-50c3-4e9e-8852-713ef046389f"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Create_file": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "713916b1-db71-4e2e-85f9-29fbec64cdac"
+          },
+          "type": "Foreach"
+        },
+        "Get_file_content": {
+          "runAfter": {
+            "Get_file_metadata": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2b864ecd-f010-4ac6-9392-4704e1d1e675",
+            "b!rpJ5zNi_0UCnNOtxP3lik0AZRJ7KQp5EhGrBdxMHRJXuGSvUzlD_Q7Zxc1k5C6Hy.01QU2BW5N7BFDEODEZHVFYCFFSMMVZZR4X": "/Documents/CentralWorkload_Excel.xlsx"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "GetFileContent",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "b!rpJ5zNi_0UCnNOtxP3lik0AZRJ7KQp5EhGrBdxMHRJXuGSvUzlD_Q7Zxc1k5C6Hy.01QU2BW5N7BFDEODEZHVFYCFFSMMVZZR4X",
+              "inferContentType": true
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Get_file_metadata": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "b!rpJ5zNi_0UCnNOtxP3lik0AZRJ7KQp5EhGrBdxMHRJXuGSvUzlD_Q7Zxc1k5C6Hy.01QU2BW5N7BFDEODEZHVFYCFFSMMVZZR4X": "/Documents/CentralWorkload_Excel.xlsx",
+            "operationMetadataId": "d7a6d9ef-8fbb-4a2f-9ea5-e67c865bbfc1"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "GetFileMetadata",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "b!rpJ5zNi_0UCnNOtxP3lik0AZRJ7KQp5EhGrBdxMHRJXuGSvUzlD_Q7Zxc1k5C6Hy.01QU2BW5N7BFDEODEZHVFYCFFSMMVZZR4X"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        },
+        "Create_file": {
+          "runAfter": {
+            "Get_file_content": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "77d0b84e-e69d-47ff-9720-e201a27e467e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "folderPath": "/Documents/ExportCentral",
+              "name": "Export@{formatDateTime(utcNow(),'dd-MM-yyyy HH:mm:ss TH')}.xlsx",
+              "body": "@body('Get_file_content')"
+            },
+            "authentication": "@parameters('$authentication')"
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Create_share_link": {
+          "runAfter": {
+            "Apply_to_each_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9329c5e3-5935-49b0-90a3-8c2f57601a47"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CreateShareLinkV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "@outputs('Create_file')?['body/Id']",
+              "type": "Edit",
+              "scope": "Organization"
+            },
+            "authentication": "@parameters('$authentication')"
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}
