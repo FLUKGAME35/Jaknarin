@@ -105,3 +105,6 @@
 มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตเฉลิมพระเกียรติ จังหวัดสกลนคร  
 
 ---
+
+## วิดีโอนำเสนอโครงงาน
+ดูวิดีโอนำเสนอโครงงาน: [คลิกเพื่อรับชมวิดีโอนำเสนอ](https://o365ku.sharepoint.com/:v:/s/KURecordHoursArtCulturalAndFacultyWorkload/EXl1c42pqItJvQ6Kj9JVQmABRhFdojYp22JrFStCkOEtBQ?e=VX0e66) 
