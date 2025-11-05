@@ -1,4 +1,4 @@
-# KU ArtCultural Power Apps Projects
+# Application for Recording Hours of Art in Cultural Preservation and Faculty Workload
 
 โครงการพัฒนาแอปพลิเคชันเพื่อจัดเก็บชั่วโมงการทำงานด้านทำนุบำรุงศิลปวัฒนธรรมและภารกิจส่วนกลางของคณาจารย์และบุคลากร มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตเฉลิมพระเกียรติ จังหวัดสกลนคร  
 พัฒนาโดย **นายจักรนรินทร์ กรเกษม**  
